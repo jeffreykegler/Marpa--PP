@@ -20,7 +20,7 @@ use strict;
 use warnings;
 
 use vars qw($VERSION $STRING_VERSION $DEBUG);
-$VERSION        = '0.013_000';
+$VERSION        = '0.013_001';
 $STRING_VERSION = $VERSION;
 {
 ## no critic (BuiltinFunctions::ProhibitStringyEval)

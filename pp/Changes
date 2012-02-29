@@ -15,9 +15,12 @@
 
 Revision history for Marpa::PP
 
+0.013_001 Wed Feb 29 11:00:55 PST 2012
 0.013_000 Mon Feb 27 18:29:19 PST 2012
 
   * Fix various installation issues.
+
+  * PP distribution now in separate git repository
 
 0.012000 Tue Nov 22 00:20:33 PST 2011
 
