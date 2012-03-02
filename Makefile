@@ -13,19 +13,21 @@
 # General Public License along with Marpa::PP.  If not, see
 # http://www.gnu.org/licenses/.
 
-.PHONY: libs dummy full html_test pp_etc_make 
+.PHONY: dummy pp_test html_test full_test install
 
 dummy: 
 
-html_blib:
-	(cd html && ./Build code)
+pp_test:
+	cd pp;perl Build.PL
+	cd pp;./Build realclean
+	cd pp;perl Build.PL
+	cd pp;./Build
+	cd pp;./Build distmeta
+	cd pp;./Build test
+	cd pp;./Build distcheck
+	cd pp;./Build dist
 
-pp_etc_make:
-	(cd pp/etc && make)
-
-pp_full_test: pplib pp_etc_make pp_html_test
-
-full_test: pp_full_test
+full_test: pp_test html_test
 
 html_test:
 	test -d stage && rm -rf stage
@@ -35,7 +37,5 @@ html_test:
 	    cpanm -v --reinstall -l stage Marpa::HTML
 
 install:
-	(cd pp && perl Build.PL)
-	(cd pp && ./Build code)
-	(cd html && perl Build.PL)
-	(cd html && ./Build code)
+	cd pp && perl Build.PL
+	cd pp && ./Build code
