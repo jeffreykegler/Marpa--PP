@@ -30,7 +30,7 @@ pp_test:
 full_test: pp_test html_test
 
 html_test:
-	test -d stage && rm -rf stage
+	-test -d stage && rm -rf stage
 	mkdir stage
 	cpanm -v --reinstall -l stage ./pp/
 	PERL5LIB=$(CURDIR)/noxs/lib:$(CURDIR)/stage:$$PERL5LIB \
