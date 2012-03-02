@@ -13,28 +13,12 @@
 # General Public License along with Marpa::PP.  If not, see
 # http://www.gnu.org/licenses/.
 
-.PHONY: libs dummy full pp_html_test pp_etc_make \
-    pplib libs
+.PHONY: libs dummy full html_test pp_etc_make 
 
 dummy: 
 
-libs: pplib
-
-# PERL_MB_OPT unset to work around bug in Module::Build --
-# if install_base is specified twice it turns into an array
-# and the install breaks.
-# Anyway, it may be good practice to unset it.
-pplib:
-	-mkdir dpplib
-	-rm -rf dpplib/lib dpplib/man dpplib/html
-	(cd pp && PERL_MB_OPT= ./Build install --install_base ../dpplib)
-
 html_blib:
 	(cd html && ./Build code)
-
-pp_html_test: html_blib pplib
-	(cd html && \
-	PERL5LIB=$(CURDIR)/noxs/lib:$(CURDIR)/dpplib/lib/perl5:$$PERL5LIB prove -Ilib t )
 
 pp_etc_make:
 	(cd pp/etc && make)
@@ -43,10 +27,13 @@ pp_full_test: pplib pp_etc_make pp_html_test
 
 full_test: pp_full_test
 
-html_full_test:
-	(cd html/etc && \
-	    PERL5LIB=$(CURDIR)/noxs/lib:$(CURDIR)/dpplib/lib/perl5:$$PERL5LIB make )
-	
+html_test:
+	test -d stage && rm -rf stage
+	mkdir stage
+	cpanm -v --reinstall -l stage ./pp/
+	PERL5LIB=$(CURDIR)/noxs/lib:$(CURDIR)/stage:$$PERL5LIB \
+	    cpanm -v --reinstall -l stage Marpa::HTML
+
 install:
 	(cd pp && perl Build.PL)
 	(cd pp && ./Build code)
